@@ -1,50 +1,55 @@
-const mongoose = require('mongoose');
+import mongoose, { Document, Schema, Model } from 'mongoose';
 
-const StudentSchema = new mongoose.Schema({
-  // Informations personnelles
-  firstName: { type: String, required: true },        // Prénom
-  lastName: { type: String, required: true },         // Nom
-  dateOfBirth: { type: Date, required: true },       // Date de naissance
-  gender: { type: String, enum: ["Homme", "Femme"] }, // Sexe
-  nationality: { type: String },                     // Nationalité
-  photo: { type: String },                            // Photo de l'élève (URL ou path)
+export interface IStudent extends Document {
+  firstName: string;
+  lastName: string;
+  dateOfBirth: Date;
+  gender: "Homme" | "Femme";
+  nationality?: string;
+  photo?: string;
+  email: string;
+  phone: string;
+  address?: string;
+  city?: string;
+  postalCode?: string;
+  studentID: string;
+  grade: "1ere annee" | "2ere annee" | "3ere annee" | "4ere annee" | "5ere annee" | "6ere annee";
+  enrollmentDate?: Date;
+  monthlyFee: number;
+  parentName?: string;
+  parentPhone?: string;
+  parentEmail?: string;
+  relationship?: string;
+  createdAt?: Date;
+}
 
-  // Coordonnées
-  email: { type: String, required: true, unique: true }, // Email unique
-  phone: { type: String, required: true },              // Téléphone
-  address: { type: String },                            // Adresse
-  city: { type: String },                               // Ville
-  postalCode: { type: String },                         // Code postal
-
-// Informations académiques (Primaire, système marocain)
-studentID: { type: String, required: true, unique: true }, // ID unique
-grade: { 
-  type: String, 
-  enum: [
-    "1ere annee", 
-    "2ere annee", 
-    "3ere annee", 
-    "4ere annee", 
-    "5ere annee", 
-    "6ere annee"
-  ], 
-  required: true 
-},
-
-// Classe / niveau primaire
-enrollmentDate: { type: Date, default: Date.now }, // Date d'inscription
-monthlyFee: { type: Number, required: true }  ,      // Frais mensuels
-
-  // Informations parents / tuteurs
-  parentName: { type: String },    // Nom du parent ou tuteur
-  parentPhone: { type: String },   // Téléphone du parent
-  parentEmail: { type: String },   // Email du parent
-  relationship: { type: String },  // Relation (Père, Mère, Tuteur)
-
-  // Date de création
+const StudentSchema = new Schema({
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  dateOfBirth: { type: Date, required: true },
+  gender: { type: String, enum: ["Homme", "Femme"], required: true },
+  nationality: { type: String },
+  photo: { type: String },
+  email: { type: String, required: true, unique: true },
+  phone: { type: String, required: true },
+  address: { type: String },
+  city: { type: String },
+  postalCode: { type: String },
+  studentID: { type: String, required: true, unique: true },
+  grade: { 
+    type: String, 
+    enum: ["1ere annee","2ere annee","3ere annee","4ere annee","5ere annee","6ere annee"],
+    required: true
+  },
+  enrollmentDate: { type: Date, default: Date.now },
+  monthlyFee: { type: Number, required: true },
+  parentName: { type: String },
+  parentPhone: { type: String },
+  parentEmail: { type: String },
+  relationship: { type: String },
   createdAt: { type: Date, default: Date.now }
 });
 
-const Student = mongoose.model('Student', StudentSchema);
+const StudentModel: Model<IStudent> = mongoose.model<IStudent>('Student', StudentSchema);
 
-module.exports = Student;
+export default StudentModel;

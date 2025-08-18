@@ -1,8 +1,9 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
 
-const studentRoutes = require('./routes/studentRoutes');
+import studentRoutes from './routes/studentRoutes';
+import paymentRoutes from './routes/paymentRoutes';
 
 
 const app = express();
@@ -10,11 +11,10 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use('/api', studentRoutes);
+app.use('/api', studentRoutes , paymentRoutes);
 
-
-app.get('/', (req:any, res:any) => {
+app.get('/', (_req, res) => {
   res.json({ message: 'Backend OK ✅' });
 });
 
-module.exports = app;
+export default app;

@@ -1,61 +1,14 @@
-const express = require('express');
+import express from 'express';
+import { addStudent, getStudents , getStudentByStudentID , deleteStudentByStudentID , updateStudentByStudentID } from '../controllers/studentController';
+
 const router = express.Router();
-const Student = require('../models/students');
 
-router.post('/students', async (req: any, res: any) => {
-  try {
-    const {
-      firstName,
-      lastName,
-      dateOfBirth,
-      gender,
-      nationality,
-      photo,
-      email,
-      phone,
-      address,
-      city,
-      postalCode,
-      studentID,
-      grade,
-      enrollmentDate,
-      monthlyFee,
-      parentName,
-      parentPhone,
-      parentEmail,
-      relationship
-    } = req.body;
+router.post('/students', addStudent);
+router.get('/students', getStudents);
+router.get('/students/:studentID', getStudentByStudentID);
+router.delete('/students/:studentID', deleteStudentByStudentID); 
+router.put('/students/:studentID', updateStudentByStudentID); 
 
-    // Créer un nouvel élève
-    const newStudent = new Student({
-      firstName,
-      lastName,
-      dateOfBirth,
-      gender,
-      nationality,
-      photo,
-      email,
-      phone,
-      address,
-      city,
-      postalCode,
-      studentID,
-      grade,
-      enrollmentDate,
-      monthlyFee,
-      parentName,
-      parentPhone,
-      parentEmail,
-      relationship
-    });
 
-    await newStudent.save();
 
-    res.status(201).json({ message: 'Élève ajouté avec succès ✅', student: newStudent });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Erreur lors de l’ajout de l’élève ❌', error });
-  }
-});
-
-module.exports = router;
+export default router;
