@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema, Model } from 'mongoose';
+import mongoose, { Document, Schema, Model  } from 'mongoose';
 
 export interface IStudent extends Document {
   firstName: string;
@@ -12,6 +12,7 @@ export interface IStudent extends Document {
   address?: string;
   city?: string;
   postalCode?: string;
+  classRef?: mongoose.Types.ObjectId;      // <-- ajout : référence vers Class
   studentID: string;
   grade: "1ere annee" | "2ere annee" | "3ere annee" | "4ere annee" | "5ere annee" | "6ere annee";
   enrollmentDate?: Date;
@@ -35,6 +36,8 @@ const StudentSchema = new Schema({
   address: { type: String },
   city: { type: String },
   postalCode: { type: String },
+    classRef: { type: Schema.Types.ObjectId, ref: 'Class'  }, // <-- relation
+
   studentID: { type: String, required: true, unique: true },
   grade: { 
     type: String, 
